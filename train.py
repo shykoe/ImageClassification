@@ -119,7 +119,7 @@ def main(args):
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),])
     val_tf = transforms.Compose([
-        Resize(max(model.input_size)),
+        transforms.Resize((max(model.input_size),max(model.input_size))),
         transforms.ToTensor()
         ]
     )
