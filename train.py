@@ -158,8 +158,8 @@ def main(args):
     else:
         raise
     if is_cuda:
-        #model = torch.nn.DataParallel(model).cuda() 
-        model = model.cuda() 
+        model = torch.nn.DataParallel(model).cuda() 
+        #model = model.cuda() 
 
 
     for epoch in range(args.start_epoch, args.epochs):
@@ -280,7 +280,7 @@ def validate(val_loader, model, criterion):
 
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
-    torch.save(state, filename)
+    torch.save(state, os.path.join(args.save_path, filename))
     if is_best:
         shutil.copyfile(filename, 'model_best.pth.tar')
 
