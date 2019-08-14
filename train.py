@@ -118,13 +118,19 @@ def main(args):
         transforms.RandomSizedCrop(max(model.input_size)),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),])
-    val_tf = utils.TransformImage(
-        model,
-        scale=scale,
-        preserve_aspect_ratio=args.preserve_aspect_ratio
+    val_tf = transforms.Compose([
+        Resize(max(model.input_size)),
+        transforms.ToTensor()
+        ]
     )
+
+
+
     train_dataset = datasets.ImageFolder(args.train_data,train_tf)
     val_dataset = datasets.ImageFolder(args.val_data,val_tf)
+
+
+    
     train_loader = torch.utils.data.DataLoader(train_dataset, 
                     batch_size=args.batch_size,
                     shuffle=True, 
@@ -152,7 +158,8 @@ def main(args):
     else:
         raise
     if is_cuda:
-        model = torch.nn.DataParallel(model).cuda() 
+        #model = torch.nn.DataParallel(model).cuda() 
+        model = model.cuda() 
 
 
     for epoch in range(args.start_epoch, args.epochs):
